@@ -76,3 +76,6 @@ crashlytics-build.properties
 .vscode/
 .vsconfig
 /[Aa]ssets/[Ss]treamingAssets/aa/*
+WebGL Builds/
+webgl_sharing
+connectwebgl.zip
