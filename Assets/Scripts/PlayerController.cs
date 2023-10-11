@@ -29,6 +29,7 @@ public class PlayerController : MonoBehaviour
             anim.SetBool("isGround", isGrounded);
             print("jumped");
             rb.AddForce(new Vector2(0f, jumpForce));
+            print(rb.velocity.y);
             isGrounded = false;
        }
        anim.SetBool("isGround", isGrounded);
