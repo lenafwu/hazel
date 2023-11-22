@@ -4,28 +4,49 @@ using UnityEngine;
 
 public class PlayerAttack : MonoBehaviour
 {
-    private bool _isAttacking = false;
+    public bool _isAttacking = false;
     [SerializeField] private Animator _anim;
+    [SerializeField] private GameObject hitzone;
+    private PlayerController playerController;
     // Start is called before the first frame update
     void Start()
     {
         _anim = GetComponent<Animator>();
+        hitzone.SetActive(false);
+        playerController = GetComponent<PlayerController>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetButtonDown("Fire1") && !_isAttacking)
+        if(DialogueManager.isDialogueOpen) {
+            return;
+        }
+        if(Input.GetButtonDown("Fire1") && !_isAttacking && playerController.isGrounded)
         {
             _isAttacking = true;
+            hitzone.SetActive(true);
+            GetComponent<Rigidbody2D>().velocity = Vector2.zero;
             PlayAttackAnimation();
         }
 
-        _isAttacking = false;
+       // _isAttacking = false;
     }
 
     void PlayAttackAnimation()
     {
         _anim.SetTrigger("attacked");
+    }
+
+    // add to the animation event BW_attack
+    public void FinishAttack()
+    {
+        _isAttacking = false;
+        hitzone.SetActive(false);
+    }
+
+    public bool IsAttacking()
+    {
+        return _isAttacking;
     }
 }

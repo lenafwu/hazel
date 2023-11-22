@@ -13,37 +13,64 @@ public class PlayerController : MonoBehaviour
     private Animator anim;
     public bool isGrounded = false;
 
+    private PlayerAttack playerAttack;
+
+    public AudioClip walkSound;
+    public AudioClip jumpSound;
+    private AudioSource audioSource;
+
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+        playerAttack = GetComponent<PlayerAttack>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     void FixedUpdate() {
+       if(playerAttack.IsAttacking() || DialogueManager.isDialogueOpen) {
+            rb.velocity = new Vector2(0f, 0f);
+            return;
+       }
+
        float horizontalInput = Input.GetAxis("Horizontal");
        isGrounded = GroundCheck();
 
+       // Jump
        if(isGrounded && Input.GetAxis("Jump") > 0 ) {
             anim.SetTrigger("jumped");
             anim.SetBool("isGround", isGrounded);
-            print("jumped");
             rb.AddForce(new Vector2(0f, jumpForce));
-            print(rb.velocity.y);
             isGrounded = false;
+            PlaySound(jumpSound);
        }
+
        anim.SetBool("isGround", isGrounded);
+
+       // Walk
        rb.velocity = new Vector2(horizontalInput * speed, rb.velocity.y);
+
+       // Play walking sound
+       /* FIXME: still looping when not moving
+        if (isGrounded && Mathf.Abs(horizontalInput) > 0.1f && !audioSource.isPlaying)
+        {
+            PlaySound(walkSound, true);
+        }
+        else if (isGrounded && Mathf.Abs(horizontalInput) < 0.1f)
+        {
+            audioSource.loop = false;
+            audioSource.Stop();
+        }*/
        
-       // flip the character
+       // Flip the character
        if(horizontalInput < 0) {
            transform.localScale = new Vector3(-1, 1, 1);
        } else if(horizontalInput > 0) {
            transform.localScale = new Vector3(1, 1, 1);
        }
+
        // Communicate with the Animator
-    //    print("xVelocity: " + rb.velocity.x);
-    //    print("yVelocity: " + rb.velocity.y);
        anim.SetFloat("xVelocity", Mathf.Abs(rb.velocity.x));
        anim.SetFloat("yVelocity", rb.velocity.y);
 
@@ -51,5 +78,11 @@ public class PlayerController : MonoBehaviour
 
     private bool GroundCheck(){
         return Physics2D.OverlapCircle(groundCheckPos.position, groundCheckRadius, whatIsGround);
+    }
+
+    private void PlaySound(AudioClip clip, bool loop = false) {
+        audioSource.clip = clip;
+        audioSource.loop = loop;
+        audioSource.Play();
     }
 }
