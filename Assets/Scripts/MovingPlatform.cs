@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Numerics;
 using UnityEngine;
 
 public class MovingPlatform : MonoBehaviour
@@ -10,7 +9,7 @@ public class MovingPlatform : MonoBehaviour
     public Transform endPoint;
     public float speed = 1.5f;
 
-    int direction = 1;
+    private int direction = 1;
 
     private void OnDrawGizmos() {
         if(platform != null && startPoint != null && endPoint != null) {
@@ -20,18 +19,26 @@ public class MovingPlatform : MonoBehaviour
         }
     }
 
-    void update(){
+    void Update(){
         Vector2 target = currentMovementTarget();
-        platform.position = Vector2.Lerp(platform.position, target, speed * Time.deltaTime);
+        print(target);
+        platform.position = Vector2.MoveTowards(platform.position, target, speed * Time.deltaTime);
+
+        float distance = Vector2.Distance(platform.position, target);
+
+        if(distance < 0.1f) {
+            direction *= -1;
+        }
     }
 
 
    // <--- 1      platform     -1 --->
-    Vector2 currentMovementTarget(){
+    private Vector2 currentMovementTarget(){
         if(direction == 1) {
             return startPoint.position;
         } else {
             return endPoint.position;
         }
     }
+
 }

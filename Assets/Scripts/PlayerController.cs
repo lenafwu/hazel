@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float groundCheckRadius = 0.15f;
     [SerializeField] private Transform groundCheckPos;
     [SerializeField] private LayerMask whatIsGround;
+
     private Rigidbody2D rb;
     private Animator anim;
     public bool isGrounded = false;
