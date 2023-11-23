@@ -30,11 +30,18 @@ public class Moving : MonoBehaviour
     private Transform GetNextWaypoint()
     {
         _currentWaypointIndex++;
+
+        // Flip the sprite
+        // FIXME: hardcoded scale
+        // TODO: way points should be in different directions
+        if(this.tag == "Monster"){
+             transform.localScale = new Vector3(transform.localScale.x * -1, 1, 1);
+        }
+
         if(_currentWaypointIndex >= waypoints.Length)
         {
             _currentWaypointIndex = 0;
         }
         return waypoints[_currentWaypointIndex];
     }
-
 }

@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyBehavior : MonoBehaviour
-{public float speed = 1.0f;
+{
+    public float speed = 1.0f;
     public float distance = 2.0f;
 
     private bool movingRight = true;

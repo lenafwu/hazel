@@ -4,6 +4,12 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public float knockBackForce = 3f;
+    public float knockBackCounter;
+    public float knockBackTotalTime = 0.2f;
+
+    public bool isKnockedFromRight;
+
     [SerializeField] private float speed = 10f;
     [SerializeField] private float jumpForce = 100f;
     [SerializeField] private float groundCheckRadius = 0.15f;
@@ -16,8 +22,10 @@ public class PlayerController : MonoBehaviour
 
     private PlayerAttack playerAttack;
 
+
     public AudioClip walkSound;
     public AudioClip jumpSound;
+    public AudioClip hitSound;
     private AudioSource audioSource;
 
     // Start is called before the first frame update
@@ -30,10 +38,30 @@ public class PlayerController : MonoBehaviour
     }
 
     void FixedUpdate() {
+       // Stop moving
        if(playerAttack.IsAttacking() || DialogueManager.isDialogueOpen) {
             rb.velocity = new Vector2(0f, 0f);
             return;
        }
+
+       // Knockback
+       if(knockBackCounter > 0){
+
+            if (!audioSource.isPlaying)
+            {
+                audioSource.PlayOneShot(hitSound);
+            }
+            
+            knockBackCounter -= Time.deltaTime;
+
+            if(isKnockedFromRight){
+            rb.velocity = new Vector2(-knockBackForce, knockBackForce * 0.2f);
+            }else{
+            rb.velocity = new Vector2(knockBackForce, knockBackForce* 0.2f);
+            }
+            return;
+       }
+
 
        float horizontalInput = Input.GetAxis("Horizontal");
        isGrounded = GroundCheck();
