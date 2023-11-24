@@ -26,7 +26,13 @@ public class PlayerController : MonoBehaviour
     public AudioClip walkSound;
     public AudioClip jumpSound;
     public AudioClip hitSound;
+    public AudioClip attackSound;
     private AudioSource audioSource;
+
+    void Awake()
+    {
+        DontDestroyOnLoad(gameObject); 
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -51,7 +57,7 @@ public class PlayerController : MonoBehaviour
             {
                 audioSource.PlayOneShot(hitSound);
             }
-            
+
             knockBackCounter -= Time.deltaTime;
 
             if(isKnockedFromRight){
@@ -113,5 +119,10 @@ public class PlayerController : MonoBehaviour
         audioSource.clip = clip;
         audioSource.loop = loop;
         audioSource.Play();
+    }
+
+    public void PlayAttackSound()
+    {
+        audioSource.PlayOneShot(attackSound);
     }
 }

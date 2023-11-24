@@ -7,7 +7,7 @@ public class PlayerAttack : MonoBehaviour
     public bool _isAttacking = false;
     [SerializeField] private Animator _anim;
     [SerializeField] private GameObject hitzone;
-    private PlayerController playerController;
+    public PlayerController playerController;
     // Start is called before the first frame update
     void Start()
     {
@@ -36,6 +36,7 @@ public class PlayerAttack : MonoBehaviour
     void PlayAttackAnimation()
     {
         _anim.SetTrigger("attacked");
+        playerController.PlayAttackSound();
     }
 
     // add to the animation event BW_attack

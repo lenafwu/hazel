@@ -202,7 +202,7 @@ GameObject:
   - component: {fileID: 179355876}
   - component: {fileID: 179355875}
   m_Layer: 0
-  m_Name: Grid
+  m_Name: Ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5603,7 +5603,7 @@ GameObject:
   - component: {fileID: 1747190519}
   - component: {fileID: 1747190518}
   m_Layer: 0
-  m_Name: Grid
+  m_Name: Bakcground Grid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5885,7 +5885,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6095425614865232764, guid: 1774818d0ade24d858653d5a3d5ca7b8, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -4.2789593
+      value: -4.278864
       objectReference: {fileID: 0}
     - target: {fileID: 7714273574847681615, guid: 1774818d0ade24d858653d5a3d5ca7b8, type: 3}
       propertyPath: m_LocalPosition.x
@@ -5933,7 +5933,7 @@ PrefabInstance:
       objectReference: {fileID: 1751585293}
     - target: {fileID: 8030395589683727258, guid: 1774818d0ade24d858653d5a3d5ca7b8, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -4.2789593
+      value: -4.278864
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
