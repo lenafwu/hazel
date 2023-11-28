@@ -22,6 +22,9 @@ public class PlayerController : MonoBehaviour
 
     private PlayerAttack playerAttack;
 
+    private int maxJumps = 2;
+    private int _jumpsLeft;
+
 
     public AudioClip walkSound;
     public AudioClip jumpSound;
