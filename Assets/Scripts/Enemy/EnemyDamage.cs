@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class EnemyDamage : MonoBehaviour
 {
@@ -11,9 +12,11 @@ public class EnemyDamage : MonoBehaviour
     public PlayerController playerController;
     public bool isHit = false;
     public Animator anim;
+    public GameObject healthText;
     
     void Start(){
         currentHealth = maxHealth;
+        healthText.SetActive(false);
     }
 
     void Update(){
@@ -49,7 +52,10 @@ public class EnemyDamage : MonoBehaviour
         isHit = true;
         anim.SetTrigger("doTouch");
         currentHealth -= damage;   
-        StartCoroutine(RecoverFromHit());             
+        StartCoroutine(RecoverFromHit()); 
+        healthText.SetActive(true);
+        healthText.GetComponent<TMP_Text>().text = currentHealth.ToString();
+
     }
 
     private void Die(){

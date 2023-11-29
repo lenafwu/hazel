@@ -31,6 +31,8 @@ public class PlayerController : MonoBehaviour
     public AudioClip hitSound;
     public AudioClip attackSound;
     private AudioSource audioSource;
+    private float horizontalInput;
+    private bool doubleJump;
 
     void Awake()
     {
@@ -44,6 +46,24 @@ public class PlayerController : MonoBehaviour
         anim = GetComponent<Animator>();
         playerAttack = GetComponent<PlayerAttack>();
         audioSource = GetComponent<AudioSource>();
+    }
+
+    void Update(){
+        horizontalInput = Input.GetAxis("Horizontal");
+
+        if(GroundCheck() && !Input.GetButton("Jump")){
+            doubleJump = false;
+        }
+
+        // this somehow works, don't touch
+        if(Input.GetButtonDown("Jump")){
+            if(GroundCheck() || doubleJump){
+                rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+
+                doubleJump = !doubleJump;
+            }
+        }
+
     }
 
     void FixedUpdate() {
@@ -72,14 +92,13 @@ public class PlayerController : MonoBehaviour
        }
 
 
-       float horizontalInput = Input.GetAxis("Horizontal");
+       
        isGrounded = GroundCheck();
 
        // Jump
        if(isGrounded && Input.GetAxis("Jump") > 0 ) {
             anim.SetTrigger("jumped");
             anim.SetBool("isGround", isGrounded);
-            rb.AddForce(new Vector2(0f, jumpForce));
             isGrounded = false;
             PlaySound(jumpSound);
        }
