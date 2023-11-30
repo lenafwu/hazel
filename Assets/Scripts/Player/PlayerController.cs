@@ -34,10 +34,10 @@ public class PlayerController : MonoBehaviour
     private float horizontalInput;
     private bool doubleJump;
 
-    void Awake()
-    {
-        DontDestroyOnLoad(gameObject); 
-    }
+    // void Awake()
+    // {
+    //     DontDestroyOnLoad(gameObject); 
+    // }
 
     // Start is called before the first frame update
     void Start()

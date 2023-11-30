@@ -25,9 +25,13 @@ public class PlayerAttack : MonoBehaviour
         if(Input.GetButtonDown("Fire1") && !_isAttacking && playerController.isGrounded)
         {
             _isAttacking = true;
-            hitzone.SetActive(true);
+      //      hitzone.SetActive(true);
             GetComponent<Rigidbody2D>().velocity = Vector2.zero;
             PlayAttackAnimation();
+        }
+
+        if(!_isAttacking){
+            SetAttackZoneInactive();
         }
 
        // _isAttacking = false;
@@ -43,11 +47,19 @@ public class PlayerAttack : MonoBehaviour
     public void FinishAttack()
     {
         _isAttacking = false;
-        hitzone.SetActive(false);
+        SetAttackZoneInactive();
     }
 
     public bool IsAttacking()
     {
         return _isAttacking;
+    }
+
+    public void SetAttackZoneActive(){
+        hitzone.SetActive(true);
+    }
+
+    public void SetAttackZoneInactive(){
+        hitzone.SetActive(false);
     }
 }

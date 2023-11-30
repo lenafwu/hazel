@@ -10,27 +10,59 @@ public class PlayerHealth : MonoBehaviour
     public Rigidbody2D rb;
     public Image[] hearts;
 
+    public PlayerAttack playerAttack;
     public Animator animator;
     // Start is called before the first frame update
     public GameoverScreen gameoverScreen;
+
+    private bool isDead = false;
     void Start()
     {
         health = maxHealth;
         animator = GetComponent<Animator>();
+        playerAttack = GetComponent<PlayerAttack>();
         UpdateHeartsUI();
     }
 
-    public void TakeDamage(int damage) {
-        health -= damage;
+    void Update(){
 
-        health = Mathf.Max(health, 0); 
-        animator.SetTrigger("hit");
-        UpdateHeartsUI(); 
-
-        if(health <= 0) {
-            animator.SetTrigger("isDead");
-        }
     }
+
+    public void TakeDamage(int damage) {
+
+
+        health -= damage;
+        health = Mathf.Max(health, 0); 
+        UpdateHeartsUI(); 
+        playerAttack.FinishAttack();
+
+
+
+
+        if (health <= 0) {
+            Debug.Log("Player died!");
+            Die();
+            return;
+        }
+
+
+        animator.SetBool("isHit", true);
+
+        StartCoroutine(RecoverFromHit());
+
+        
+
+        
+
+    }
+
+    IEnumerator RecoverFromHit()
+    {
+        // Wait for 2 seconds
+        yield return new WaitForSeconds(2.0f);
+        animator.SetBool("isHit", false);
+    }
+
     private void OnTriggerEnter2D(Collider2D other) {
         if(other.gameObject.CompareTag("Deadzone")){
             Debug.Log("Deadzone");
@@ -46,6 +78,15 @@ public class PlayerHealth : MonoBehaviour
         }
     }
     public void Die(){
+
+        animator.SetBool("isDead", true);
+        animator.SetBool("isHit", false);
+
+      //  gameObject.SetActive(false);
+      //  gameoverScreen.Setup();
+    }
+
+    public void GameOver(){
         gameObject.SetActive(false);
         gameoverScreen.Setup();
     }
