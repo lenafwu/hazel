@@ -7,12 +7,16 @@ public class PlayerHealth : MonoBehaviour
 {
     public int maxHealth = 10;
     public int health;
+    public Rigidbody2D rb;
     public Image[] hearts;
+
+    public Animator animator;
     // Start is called before the first frame update
     public GameoverScreen gameoverScreen;
     void Start()
     {
         health = maxHealth;
+        animator = GetComponent<Animator>();
         UpdateHeartsUI();
     }
 
@@ -20,10 +24,11 @@ public class PlayerHealth : MonoBehaviour
         health -= damage;
 
         health = Mathf.Max(health, 0); 
+        animator.SetTrigger("hit");
         UpdateHeartsUI(); 
 
         if(health <= 0) {
-            Die();
+            animator.SetTrigger("isDead");
         }
     }
     private void OnTriggerEnter2D(Collider2D other) {
@@ -40,8 +45,7 @@ public class PlayerHealth : MonoBehaviour
             hearts[i].enabled = health > i * 2;
         }
     }
-    private void Die(){
-        print("I died!");
+    public void Die(){
         gameObject.SetActive(false);
         gameoverScreen.Setup();
     }
