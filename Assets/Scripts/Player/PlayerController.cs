@@ -10,6 +10,8 @@ public class PlayerController : MonoBehaviour
 
     public bool isKnockedFromRight;
 
+    public GameObject healthBar;
+
     [SerializeField] private float speed = 10f;
     [SerializeField] private float jumpForce = 100f;
     [SerializeField] private float groundCheckRadius = 0.15f;
@@ -22,8 +24,7 @@ public class PlayerController : MonoBehaviour
 
     private PlayerAttack playerAttack;
 
-    private int maxJumps = 2;
-    private int _jumpsLeft;
+    private bool controlsEnabled = true;
 
 
     public AudioClip walkSound;
@@ -49,6 +50,9 @@ public class PlayerController : MonoBehaviour
     }
 
     void Update(){
+        if (!controlsEnabled) return;
+
+
         horizontalInput = Input.GetAxis("Horizontal");
 
         if(GroundCheck() && !Input.GetButton("Jump")){
@@ -66,7 +70,11 @@ public class PlayerController : MonoBehaviour
 
     }
 
+
     void FixedUpdate() {
+
+        if (!controlsEnabled) return;
+
        // Stop moving
        if(playerAttack.IsAttacking() || DialogueManager.isDialogueOpen) {
             rb.velocity = new Vector2(0f, 0f);
@@ -131,6 +139,23 @@ public class PlayerController : MonoBehaviour
        anim.SetFloat("xVelocity", Mathf.Abs(rb.velocity.x));
        anim.SetFloat("yVelocity", rb.velocity.y);
 
+    }
+
+    public void DisableControl()
+    {
+        controlsEnabled = false;
+        rb.velocity = Vector2.zero;
+        anim.SetFloat("xVelocity", 0);
+        anim.SetFloat("yVelocity", 0);
+        audioSource.enabled = false;    
+        healthBar.SetActive(false);      
+    }
+
+    public void EnableControl()
+    {
+        controlsEnabled = true;
+        audioSource.enabled = true;
+        healthBar.SetActive(true);
     }
 
     private bool GroundCheck(){

@@ -73,9 +73,19 @@ public class EnemyBehavior : MonoBehaviour
 
     void Flip() // FIXME: doesnt work
     {
-        Vector3 localScale = transform.localScale;
-        localScale.x *= -1;
-        transform.localScale = localScale;
+        Debug.Log("Flip");
+        // Vector3 localScale = transform.localScale;
+        // if (movingRight)
+        // {
+        //     // Set scale to positive value to face right
+        //     localScale.x = Mathf.Abs(localScale.x);
+        // }
+        // else
+        // {
+        //     // Set scale to negative value to face left
+        //     localScale.x = -Mathf.Abs(localScale.x);
+        // }
+        // transform.localScale = localScale;
     }
 
     void OnTriggerEnter2D(Collider2D other)

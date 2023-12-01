@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.Playables;
 
 public class DialogueManager : MonoBehaviour
 {
@@ -10,6 +11,8 @@ public class DialogueManager : MonoBehaviour
     public TMP_Text actorName;
     public TMP_Text messageText;
     public GameObject backgroundBox;
+
+    public PlayableDirector director;
     public static bool isDialogueOpen = false;
 
     Message[] currentMessages;
@@ -23,8 +26,12 @@ public class DialogueManager : MonoBehaviour
         activeMessage = 0;
         isDialogueOpen = true;
         backgroundBox.SetActive(true);
-        print("Opening dialogue with " + messages.Length);
         DisplayMessage();
+
+        // Pause timeline
+        if (director != null){
+            director.Pause();
+         }
     }
 
     void DisplayMessage(){
@@ -41,9 +48,15 @@ public class DialogueManager : MonoBehaviour
         if(activeMessage < currentMessages.Length){
             DisplayMessage();
         } else {
-            print("Closing dialogue");
+            // Dialogue is over
             isDialogueOpen = false;
             backgroundBox.SetActive(false);
+
+            // Resume the Timeline when dialogue ends
+            if (director != null)
+            {
+                director.Resume();
+            }
         }
     }
     // Start is called before the first frame update

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Playables;
 
 public class Boss_Attack : MonoBehaviour
 {
@@ -21,6 +22,8 @@ public class Boss_Attack : MonoBehaviour
     public AudioSource audioSource;
     public AudioClip attackSound;
 
+    public PlayableDirector director;
+
 
     void Start(){
         anim = GetComponent<Animator>();
@@ -30,9 +33,6 @@ public class Boss_Attack : MonoBehaviour
     }
     void Update(){
 
-        if(currentHealth <= 0){
-            Die();
-        }
 
         if(boss_hitzone.PlayerIsHit()){
             playerController.knockBackCounter = playerController.knockBackTotalTime;
@@ -71,7 +71,12 @@ public class Boss_Attack : MonoBehaviour
     private void HitByPlayer(){
         audioSource.Stop();
         anim.SetBool("isHit", true);
-        currentHealth -= 10;
+        currentHealth -= 50;
+
+        if(currentHealth <= 0){
+            Die();
+        }
+
         StopAttack();
         healthBar.fillAmount = (maxHealth - currentHealth) / maxHealth;
         StartCoroutine(RecoverFromHit());
@@ -88,7 +93,9 @@ public class Boss_Attack : MonoBehaviour
 
 
     private void Die(){
+        Debug.Log("Cassandra Died");
         anim.SetBool("isDead", true);
+        director.Play();
     }
     
 }
