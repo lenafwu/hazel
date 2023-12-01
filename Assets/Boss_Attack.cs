@@ -8,6 +8,8 @@ public class Boss_Attack : MonoBehaviour
 {
     public float maxHealth = 100f;
     public float currentHealth;
+
+    public float hitDamage = 10f;
     public GameObject hitzone;
     public PlayerHealth playerHealth;
     public PlayerController playerController;
@@ -71,7 +73,7 @@ public class Boss_Attack : MonoBehaviour
     private void HitByPlayer(){
         audioSource.Stop();
         anim.SetBool("isHit", true);
-        currentHealth -= 50;
+        currentHealth -= hitDamage;
 
         if(currentHealth <= 0){
             Die();
@@ -88,12 +90,10 @@ public class Boss_Attack : MonoBehaviour
         yield return new WaitForSeconds(2.0f); 
         anim.SetBool("isHit", false);
         hitzone.SetActive(false);
-        // Wait for 2 seconds
     }
 
 
     private void Die(){
-        Debug.Log("Cassandra Died");
         anim.SetBool("isDead", true);
         director.Play();
     }

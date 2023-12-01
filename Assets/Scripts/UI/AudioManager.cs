@@ -10,9 +10,6 @@ public class AudioManager : MonoBehaviour
     [Header("----- Audio Clip -----")]
     public AudioClip background;
 
-    private void Awake() {
-       DontDestroyOnLoad(transform.gameObject);
-    }
     // Start is called before the first frame update
     void Start()
     {
