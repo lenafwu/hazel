@@ -8,10 +8,6 @@ public class CutsceneTrigger : MonoBehaviour
     public Animator camAnim;
     public DialogueTrigger dialogueTrigger;
     private static bool isPlayed = false;
-    void Start()
-    {
-        
-    }
     void OnTriggerEnter2D(Collider2D other)
     {
         if(other.gameObject.tag == "Player" && !isPlayed)

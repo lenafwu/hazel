@@ -6,7 +6,7 @@ using UnityEngine.Playables;
 public class DirectorController : MonoBehaviour
 {
     private PlayableDirector director;
-    private static bool hasPlayedCutscene = false;
+    public static bool hasPlayedCutscene = false;
 
     void Awake()
     {

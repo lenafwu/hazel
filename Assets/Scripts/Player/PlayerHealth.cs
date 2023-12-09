@@ -6,60 +6,37 @@ using UnityEngine.UI;
 public class PlayerHealth : MonoBehaviour
 {
     public int maxHealth = 10;
-    public int health;
     public Rigidbody2D rb;
     public Image[] hearts;
-
     public PlayerAttack playerAttack;
     public Animator animator;
     // Start is called before the first frame update
     public GameoverScreen gameoverScreen;
 
-    private bool isDead = false;
     void Start()
     {
-        health = maxHealth;
         animator = GetComponent<Animator>();
         playerAttack = GetComponent<PlayerAttack>();
         UpdateHeartsUI();
     }
 
-    void Update(){
-
-    }
-
     public void TakeDamage(int damage) {
-
-
-        health -= damage;
-        health = Mathf.Max(health, 0); 
+        GameManager.Instance.ReduceHealth(damage);
         UpdateHeartsUI(); 
         playerAttack.FinishAttack();
 
-
-
-
-        if (health <= 0) {
-            Debug.Log("Player died!");
+        if(GameManager.Instance.health <= 0){
             Die();
-            return;
-        }
-
-
-        animator.SetBool("isHit", true);
-
-        StartCoroutine(RecoverFromHit());
-
-        
-
-        
-
+        }else{
+            animator.SetBool("isHit", true);
+            StartCoroutine(RecoverFromHit());
+        }      
     }
 
     IEnumerator RecoverFromHit()
     {
         // Wait for 2 seconds
-        yield return new WaitForSeconds(2.0f);
+        yield return new WaitForSeconds(1.0f);
         animator.SetBool("isHit", false);
     }
 
@@ -74,13 +51,15 @@ public class PlayerHealth : MonoBehaviour
     {
         for (int i = 0; i < hearts.Length; i++)
         {
-            hearts[i].enabled = health > i * 2;
+            hearts[i].enabled = GameManager.Instance.health > i * 2;
         }
     }
     public void Die(){
 
         animator.SetBool("isDead", true);
         animator.SetBool("isHit", false);
+        GameManager.Instance.ResetHealth();
+
 
       //  gameObject.SetActive(false);
       //  gameoverScreen.Setup();
